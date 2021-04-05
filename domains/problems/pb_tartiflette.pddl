@@ -1,6 +1,6 @@
 (define (problem tartiflette) (:domain recipies)
 (:objects 
-    potatoe cheese bacon oignon salad - ingredient
+    potatoe cheese bacon onion salad - ingredient
     pan1 pan2 - cooker
 )
 
@@ -11,7 +11,7 @@
     (free potatoe)
     (free cheese)
     (free bacon)
-    (free oignon)
+    (free onion)
     (free salad)
     
 )
@@ -20,7 +20,7 @@
     (cooked potatoe)
     (cooked cheese)
     (cooked bacon)
-    (cooked oignon)
+    (cooked onion)
     (not (cooked salad))
     (is_clean pan1)
     (is_clean pan2)
