@@ -45,14 +45,11 @@ class State(Domain):
         # if apply method does not return None, then set current state to new state
         pass
     
-class Family():
-    def __init__(self, name):
-        self.name = "family"
 
 class WorldObject():
     def __init__(self, name):
         self.name = name
-        self.family = None 
+        self.family = "family"
 
 class Action():
     def __init__(self, name):
@@ -68,26 +65,50 @@ world_dic = domprob.worldobjects()
 print(world_dic)
 
 # object list
-obj_list = []
+obj_dic = dict()
+
+family_dic = dict()
+
 for obj in world_dic.keys():
     wo = WorldObject(name = obj)
     wo.family = world_dic[obj]
-    obj_list.append(wo)
-    print(wo)
-print(obj_list)
+    obj_dic[obj] = wo
+    
+print(obj_dic)
     
 # action list
-action_list = []
+action_dic = dict()
 for op in domprob.operators():
     print(op)
     my_op = Action(name = op)
-    action_list.append(my_op)
+    action_dic[op]=my_op
+print(action_dic)
     
 # initial state
 init_state = domprob.initialstate()
-my_init_state = dict()
-# there is going to be a name issue
 
+init_state_dic = dict()
+for i in range(len(init_state)):
+    [carac, obj] = init_state.pop().__dict__["predicate"]
+    if obj in init_state_dic.keys():
+        init_state_dic[obj][carac]=True
+    else:
+        init_state_dic[obj]=dict()
+        init_state_dic[obj][carac]=True
+        
+print(init_state_dic)
 
 # goal
+goal = domprob.goals()
+goal_state_dic = dict()
+for i in range(len(goal)):
+    [carac, obj] = goal.pop().__dict__["predicate"]
+    if obj in goal_state_dic.keys():
+        goal_state_dic[obj][carac]=True
+    else:
+        goal_state_dic[obj]=dict()
+        goal_state_dic[obj][carac]=True
+print(goal_state_dic)
+
+# preconditions
         
