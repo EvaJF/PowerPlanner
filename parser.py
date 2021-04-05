@@ -22,10 +22,14 @@ class Domain():
         self.domprob = pddlpy_domprob
         self.init_state = None # State object
         self.goal_state = None # State object
-        self.actions = None # list of Action objects
+        self.actions = None # list of actions
+        self.objects = None # list of world objects
+        
+    
         
 class Utils():
-    
+    def parser(pddlpy_domprob):
+        pass
     def heuristicSearch():
         pass
     
@@ -45,7 +49,7 @@ class Family():
     def __init__(self, name):
         self.name = "family"
 
-class WorldObjects():
+class WorldObject():
     def __init__(self, name):
         self.name = name
         self.family = None 
@@ -55,7 +59,35 @@ class Action():
         self.name = name
         self. pre_cond = dict()
         self.effects = dict()
+        self.arg_type = list()
         
         
+## Parsing  - DRAFT ##
+        
+world_dic = domprob.worldobjects()
+print(world_dic)
+
+# object list
+obj_list = []
+for obj in world_dic.keys():
+    wo = WorldObject(name = obj)
+    wo.family = world_dic[obj]
+    obj_list.append(wo)
+    print(wo)
+print(obj_list)
     
+# action list
+action_list = []
+for op in domprob.operators():
+    print(op)
+    my_op = Action(name = op)
+    action_list.append(my_op)
+    
+# initial state
+init_state = domprob.initialstate()
+my_init_state = dict()
+# there is going to be a name issue
+
+
+# goal
         
