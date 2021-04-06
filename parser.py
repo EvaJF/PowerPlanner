@@ -33,15 +33,29 @@ class Utils():
     def heuristicSearch(self):
         pass
     
-class State(Domain):
+class State():
+    def __init__(self, init_state):
+        self.state = init_state
     
-    def __init__(self):
-        self.current_state = self.init_state
+    def apply(self, action, arg_tupple):
+        #Check if the action is OK
+        if not arg_tupple in action.actions.keys():
+            print("You can't perform this action with these arguments")
+            return
+        
+        action_specific = action.actions[arg_tupple]
+        #Check les préconditions positives
+        if self.state.issuperset(action_specific["preconditions_pos"]):
+            self.state = self.state.union(action_specific["effets_pos"]).difference(action_specific["effets_neg"])
+            print("The state has been modified")
+            print(self.state)
+        
+        else :
+            print("The preconditions have not been met to perform this action")
+
+
     
-    def apply(self, action, arg_list):
-        pass
-    
-    def update(self, action, arg_list):
+    def update(self, action, arg_tupple):
         # if apply method does not return None, then set current state to new state
         pass
     
@@ -101,8 +115,9 @@ init_state = domprob.initialstate()
 init_state_set = set()
 for i in range(len(init_state)):
     [carac, obj] = init_state.pop().__dict__["predicate"]
-    init_state_set.add((obj, carac))
+    init_state_set.add((carac, obj))
         
+state = State(init_state=init_state_set)
 print(init_state_set)
 
 # goal
@@ -110,7 +125,7 @@ goal = domprob.goals()
 goal_state_set = set()
 for i in range(len(goal)):
     [carac, obj] = goal.pop().__dict__["predicate"]
-    goal_state_set. add((obj, carac))
+    goal_state_set. add((carac, obj))
 print(goal_state_set)
 
         
