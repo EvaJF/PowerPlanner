@@ -28,9 +28,9 @@ class Domain():
     
         
 class Utils():
-    def parser(pddlpy_domprob):
+    def parser(self,pddlpy_domprob):
         pass
-    def heuristicSearch():
+    def heuristicSearch(self):
         pass
     
 class State(Domain):
@@ -54,15 +54,14 @@ class WorldObject():
 class Action():
     def __init__(self, name):
         self.name = name
-        self. pre_cond = dict()
-        self.effects = dict()
+        self.actions=dict()
         self.arg_type = list()
         
         
 ## Parsing  - DRAFT ##
         
 world_dic = domprob.worldobjects()
-print(world_dic)
+
 
 # object list
 obj_dic = dict()
@@ -79,36 +78,39 @@ print(obj_dic)
 # action list
 action_dic = dict()
 for op in domprob.operators():
-    print(op)
     my_op = Action(name = op)
     action_dic[op]=my_op
-print(action_dic)
+
+for op in action_dic.keys():
+    L=list(domprob.ground_operator(op))
+    for i in range(len(L)):
+        tupleComnbi = tuple(list(L[i].variable_list.values()))
+        value=dict()
+        value["preconditions_pos"]=L[i].precondition_pos
+        value["preconditions_neg"]=L[i].precondition_neg
+        value["effets_pos"]=L[i].effect_pos
+        value["effets_neg"]=L[i].effect_neg
+        action_dic[op].actions[tupleComnbi]=value
+
+
+
     
 # initial state
 init_state = domprob.initialstate()
 
-init_state_dic = dict()
+init_state_set = set()
 for i in range(len(init_state)):
     [carac, obj] = init_state.pop().__dict__["predicate"]
-    if obj in init_state_dic.keys():
-        init_state_dic[obj][carac]=True
-    else:
-        init_state_dic[obj]=dict()
-        init_state_dic[obj][carac]=True
+    init_state_set.add((obj, carac))
         
-print(init_state_dic)
+print(init_state_set)
 
 # goal
 goal = domprob.goals()
-goal_state_dic = dict()
+goal_state_set = set()
 for i in range(len(goal)):
     [carac, obj] = goal.pop().__dict__["predicate"]
-    if obj in goal_state_dic.keys():
-        goal_state_dic[obj][carac]=True
-    else:
-        goal_state_dic[obj]=dict()
-        goal_state_dic[obj][carac]=True
-print(goal_state_dic)
+    goal_state_set. add((obj, carac))
+print(goal_state_set)
 
-# preconditions
         
