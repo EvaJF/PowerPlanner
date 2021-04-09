@@ -177,6 +177,9 @@ print(h0)
 print(init_state_set.difference(goal_state_set))
 print(goal_state_set.difference(init_state_set))
 
+# test heuristic 1
+h1 = max(len(init_state_set.difference(goal_state_set)), len(goal_state_set.difference(init_state_set)))
+print(h1)
 
 
         
