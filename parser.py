@@ -97,7 +97,7 @@ class State():
         return None
 
     def heuristic1(self, goal_state_set):
-        n_diff = len(self.state.difference(goal_state_set))
+        n_diff = len(self.state.difference(goal_state_set)) + len(goal_state_set.difference(self.state))
         return n_diff
     
 
@@ -171,8 +171,12 @@ for i in range(len(goal)):
 print(goal_state_set)
 
 # test heuristic 0 
-h0 = len(init_state_set.difference(goal_state_set))
+h0 = len(init_state_set.difference(goal_state_set)) + len(goal_state_set.difference(init_state_set))
 print(h0)
+
+print(init_state_set.difference(goal_state_set))
+print(goal_state_set.difference(init_state_set))
+
 
 
         
