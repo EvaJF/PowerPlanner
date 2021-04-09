@@ -3,12 +3,6 @@
 
 from pddlpy import DomainProblem
 
-# for testing
-domainfile = "./domains/domain_recipies.pddl" 
-problemfile = "./domains/problems/pb_tartiflette.pddl" 
-domprob = DomainProblem(domainfile, problemfile)
-
-
 ## Core classes ##
 
 class Domain():
@@ -32,11 +26,11 @@ class Domain():
 
         # action list
         action_dic = dict()
-        for op in domprob.operators():
+        for op in self.domprob.operators():
             my_op = Action(name = op)
             action_dic[op]=my_op
         for op in action_dic.keys():
-            L=list(domprob.ground_operator(op))
+            L=list(self.domprob.ground_operator(op))
             for i in range(len(L)):
                 tupleComnbi = tuple(list(L[i].variable_list.values()))
                 value=dict()
@@ -58,7 +52,7 @@ class Domain():
                 
 
         # goal
-        goal = domprob.goals()
+        goal = self.domprob.goals()
         goal_state_set = set()
         for i in range(len(goal)):
             [carac, obj] = goal.pop().__dict__["predicate"]
@@ -135,6 +129,8 @@ class Action():
         
  
 
-    
-
-domain = Domain(pddlpy_domprob= domprob)
+if __name__ == '__main__': # for testing
+    domainfile = "./domains/domain_recipies.pddl" 
+    problemfile = "./domains/problems/pb_tartiflette.pddl" 
+    domprob = DomainProblem(domainfile, problemfile)
+    domain = Domain(pddlpy_domprob= domprob)
