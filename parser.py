@@ -96,6 +96,9 @@ class State():
             print("The preconditions for performing this action have not been met.")
         return None
 
+    def heuristic1(self, goal_state_set):
+        n_diff = len(self.state.difference(goal_state_set))
+        return n_diff
     
 
 class WorldObject():
@@ -111,10 +114,8 @@ class Action():
         self.arg_type = list()
                         
         
-class Utils():
-        
-    def heuristicSearch(self):
-        pass
+ 
+
     
     
 ## Parsing  - DRAFT ##
@@ -168,5 +169,10 @@ for i in range(len(goal)):
     [carac, obj] = goal.pop().__dict__["predicate"]
     goal_state_set. add((carac, obj))
 print(goal_state_set)
+
+# test heuristic 0 
+h0 = len(init_state_set.difference(goal_state_set))
+print(h0)
+
 
         
