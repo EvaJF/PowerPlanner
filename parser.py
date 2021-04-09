@@ -122,6 +122,9 @@ class State():
         return self.goal_state.issubset(self.state)
 
 
+    def heuristic1(self, goal_state_set):
+        n_diff = len(self.state.difference(goal_state_set)) + len(goal_state_set.difference(self.state))
+        return n_diff
     
 
 class WorldObject():
@@ -137,10 +140,8 @@ class Action():
         self.arg_type = list()
                         
         
-class Utils():
-        
-    def heuristicSearch(self):
-        pass
+ 
+
     
 
 domain = Domain(pddlpy_domprob= domprob)
