@@ -103,7 +103,7 @@ class State():
                 precondNeg=actions[action].action_dic[argTupple]["preconditions_neg"]
                 if precondPos.issubset(self.state) and precondNeg.isdisjoint(self.state) :
                     stateAtteignable = self.apply(actions[action], argTupple)
-                    children.append((action, argTupple, stateAtteignable))
+                    children.append((action, argTupple, State(true_predicates=stateAtteignable, goal_state=self.goal_state)))
         return children
 
 
