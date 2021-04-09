@@ -84,31 +84,24 @@ class State():
         """
         #Check if the action is OK
         if not arg_tuple in action.action_dic.keys():
-            #print("You can't perform this action with these arguments.")
             return None
         
         action_specific = action.action_dic[arg_tuple]
         #Check les préconditions positives, si ok modifier l'état
         if self.state.issuperset(action_specific["preconditions_pos"]):
             newState = self.state.union(action_specific["effets_pos"]).difference(action_specific["effets_neg"])
-            #print("The state was modified.")
-            #print(self.state)
+
             return newState
         else :
-            #print("The preconditions for performing this action have not been met.")
             return None
 
     def getChildren(self, actions):
         children=[]
         for action in actions.keys() :
-            #print(action)
-            #print(list(actions[action].action_dic.keys()))
             for argTupple in list(actions[action].action_dic.keys()):
-                print(actions[action].action_dic[argTupple])
                 precondPos=actions[action].action_dic[argTupple]["preconditions_pos"]
                 precondNeg=actions[action].action_dic[argTupple]["preconditions_neg"]
                 if precondPos.issubset(self.state) and precondNeg.isdisjoint(self.state) :
-                    print(action, argTupple)
                     stateAtteignable = self.apply(actions[action], argTupple)
                     children.append((action, argTupple, stateAtteignable))
         return children
