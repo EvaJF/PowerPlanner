@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from pddlpy import DomainProblem
+from collections import defaultdict
+import itertools
 
 ## Core classes ##
 
@@ -13,6 +15,7 @@ class Domain():
         self.goal_state_set = None # dic with caracteristics of goal (? rather than State object)
         self.action_dic = None # list of actions
         self.objects = None # list of world objects
+        self.reversed_objects = None # for type of object, list of instances
         self.parser()
     
     def parser(self):
@@ -22,7 +25,12 @@ class Domain():
         for obj in world_dic.keys():
             wo = WorldObject(name = obj)
             wo.family = world_dic[obj]
-            obj_dic[obj] = wo   
+            obj_dic[obj] = wo
+        
+        # reversed objects
+        self.reversed_objects = defaultdict(list)
+        for obj,typ in self.domprob.problem.objects.items():
+            self.reversed_objects[typ].append(obj)
 
         # action list
         action_dic = dict()
@@ -30,15 +38,18 @@ class Domain():
             my_op = Action(name = op)
             action_dic[op]=my_op
         for op in action_dic.keys():
-            L=list(self.domprob.ground_operator(op))
-            for i in range(len(L)):
-                tupleComnbi = tuple(list(L[i].variable_list.values()))
+            operator = self.domprob.domain.operators[op]
+            var_names = operator.variable_list.keys()
+            var_types = operator.variable_list.values()
+            var_combinations = itertools.product(*[self.reversed_objects[typ] for typ in var_types])
+            for var_list in var_combinations:
                 value=dict()
-                value["preconditions_pos"]=L[i].precondition_pos
-                value["preconditions_neg"]=L[i].precondition_neg
-                value["effets_pos"]=L[i].effect_pos
-                value["effets_neg"]=L[i].effect_neg
-                action_dic[op].action_dic[tupleComnbi]=value  
+                # ground preconditions and effects
+                value["preconditions_pos"] = {prec.ground({name:inst for (name, inst) in zip(var_names, var_list)}) for prec in operator.precondition_pos}
+                value["preconditions_neg"] =  {prec.ground({name:inst for (name, inst) in zip(var_names, var_list)}) for prec in operator.precondition_neg}
+                value["effets_pos"] = {prec.ground({name:inst for (name, inst) in zip(var_names, var_list)}) for prec in operator.effect_pos}
+                value["effets_neg"] = {prec.ground({name:inst for (name, inst) in zip(var_names, var_list)}) for prec in operator.effect_neg}
+                action_dic[op].action_dic[tuple(var_list)] = value  
 
 
                 init_state_set = set()
@@ -91,13 +102,13 @@ class State():
 
     def getChildren(self, actions):
         children=[]
-        for action in actions.keys() :
-            for argTupple in list(actions[action].action_dic.keys()):
-                precondPos=actions[action].action_dic[argTupple]["preconditions_pos"]
-                precondNeg=actions[action].action_dic[argTupple]["preconditions_neg"]
+        for action_name, action in actions.items() :
+            for argTupple in list(action.action_dic.keys()):
+                precondPos=action.action_dic[argTupple]["preconditions_pos"]
+                precondNeg=action.action_dic[argTupple]["preconditions_neg"]
                 if precondPos.issubset(self.state) and precondNeg.isdisjoint(self.state) :
-                    stateAtteignable = self.apply(actions[action], argTupple)
-                    children.append((action, argTupple, State(true_predicates=stateAtteignable, goal_state=self.goal_state)))
+                    stateAtteignable = self.apply(action, argTupple)
+                    children.append((action_name, argTupple, State(true_predicates=stateAtteignable, goal_state=self.goal_state)))
         return children
 
 
