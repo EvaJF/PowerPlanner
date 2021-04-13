@@ -9,10 +9,12 @@ import itertools
 
 class Domain():
     
-    def __init__(self, pddlpy_domprob):
+    def __init__(self, pddlpy_domprob, parser):
+        self.parser_help = parser
         self.domprob = pddlpy_domprob
         self.current_state = None # State object
-        self.goal_state_set = None # dic with caracteristics of goal (? rather than State object)
+        self.pos_goal = None # tuple of literals that need to be true at goal
+        self.neg_goal = None # tuple of literals that need to be false at goal
         self.action_dic = None # list of actions
         self.objects = None # list of world objects
         self.reversed_objects = None # for type of object, list of instances
@@ -63,23 +65,20 @@ class Domain():
                 
 
         # goal
-        goal = self.domprob.goals()
-        goal_state_set = set()
-        for i in range(len(goal)):
-            [carac, obj] = goal.pop().__dict__["predicate"]
-            goal_state_set. add((carac, obj))
+        self.pos_goal = set(self.parser_help.positive_goals)
+        self.neg_goal = set(self.parser_help.negative_goals)
      
         ## Update ##
-        self.current_state = State(true_predicates=init_state_set, goal_state = goal_state_set)
-        self.goal_state_set = goal_state_set
+        self.current_state = State(true_predicates=init_state_set, pos_goal_state=self.pos_goal, neg_goal_state=self.neg_goal)
         self.action_dic = action_dic
         self.objects = obj_dic
     
     
 class State():
-    def __init__(self, true_predicates, goal_state):
+    def __init__(self, true_predicates, pos_goal_state, neg_goal_state):
         self.state = true_predicates
-        self.goal_state = goal_state
+        self.pos_goal_state = pos_goal_state
+        self.neg_goal_state = neg_goal_state
     
     def apply(self, action, arg_tuple):
         """
@@ -108,7 +107,8 @@ class State():
                 precondNeg=action.action_dic[argTupple]["preconditions_neg"]
                 if precondPos.issubset(self.state) and precondNeg.isdisjoint(self.state) :
                     stateAtteignable = self.apply(action, argTupple)
-                    children.append((action_name, argTupple, State(true_predicates=stateAtteignable, goal_state=self.goal_state)))
+                    children.append((action_name, argTupple, 
+                    State(true_predicates=stateAtteignable, pos_goal_state=self.pos_goal_state, neg_goal_state=self.neg_goal_state)))
         return children
 
 
@@ -117,7 +117,7 @@ class State():
         self.state = self.apply(action, arg_tuple)
 
     def isFinal(self):
-        return self.goal_state.issubset(self.state)
+        return self.pos_goal_state.issubset(self.state) and self.neg_goal_state.isdisjoint(self.state)
 
 
     def heuristic1(self, goal_state_set):
