@@ -4,7 +4,7 @@ This repository contains our project with 2 original instances written in PDDL f
 
 __Domain__
 
-We have taken the use cas of cooking to write an original PDDL domain with 2 problem files featuring the recipies of French tartiflette and good ol steak & fries. You can find these files under `domain_recipies.pddl`, `pb_tartiflette.pddl`, `pb_steackfries.pddl`. 
+We have taken the use cas of cooking to write an original PDDL domain with 2 problem files featuring the recipies of French tartiflette and good ol steak & fries. You can find these files under `domain_recipies.pddl`, `pb_tartiflette.pddl`, `pb_steakfries.pddl`. 
 
 __Parsing__
 
