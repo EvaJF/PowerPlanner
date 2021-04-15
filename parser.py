@@ -144,7 +144,6 @@ class Action():
  
 
 if __name__ == '__main__': # for testing
-    domainfile = "./domains/domain_recipies.pddl" 
-    problemfile = "./domains/problems/pb_tartiflette.pddl" 
-    domprob = DomainProblem(domainfile, problemfile)
-    domain = Domain(pddlpy_domprob= domprob)
+    domainfile = "./pddl_domains/domain_recipies.pddl" 
+    problemfile = "./pddl_domains/pb_tartiflette.pddl" 
+    domain = Domain(domainfile, problemfile)
