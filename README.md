@@ -16,9 +16,16 @@ __Planner__
 
 Our planner can be found under `planifier.py`and calls heuristics from `heuristics.py`.
 
+__Heuristics__
+
+Our planner is based on the A* algorithm with different heuristics: simple BFS, number of non-satisfied literals, HSP+, HSPmax.
+
 __Run__
+
 To run the planner, run the command `python run.py [domain_file] [problem_file]`.
 The solver will run and print statistics about the search together with the plan found.
 
 __Installation__
+
 You just need to install pddlpy by running `pip install pddlpy`.
+
