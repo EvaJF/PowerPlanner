@@ -15,3 +15,7 @@ We also use our own intermediary __parser.py__ script to define useful classes w
 __Planner__
 
 Our planner can be found under `planifer.py`and calls heuristics from `heuristics.py`.
+
+__Heuristics__
+
+Our planner is based on the A* algorithm with different heuristics: simple BFS, number of non-satisfied literals, HSP+, HSPmax.
