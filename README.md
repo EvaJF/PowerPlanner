@@ -4,7 +4,7 @@ This repository contains our project with 2 original instances written in PDDL f
 
 __Domain__
 
-We have taken the use cas of cooking to write an original a PDDL domain with 2 problem files featuring the recipies of French tartiflette and good ol steack & fries. You can find these files under `domain_recipies.pddl`, `pb_tartiflett.pddl`, `pb_steackfries.pddl`. 
+We have taken the use case of cooking to write an original PDDL domain with 2 problem files featuring the recipies of French tartiflette and good ol steack & fries. You can find these files under `domain_recipies.pddl`, `pb_tartiflett.pddl`, `pb_steackfries.pddl`. 
 
 __Parsing__
 
@@ -14,4 +14,11 @@ We also use our own intermediary __parser.py__ script to define useful classes w
 
 __Planner__
 
-Our planner can be found under `planifer.py`and calls heuristics from `heuristics.py`.
+Our planner can be found under `planifier.py`and calls heuristics from `heuristics.py`.
+
+__Run__
+To run the planner, run the command `python run.py [domain_file] [problem_file]`.
+The solver will run and print statistics about the search together with the plan found.
+
+__Installation__
+You just need to install pddlpy by running `pip install pddlpy`.

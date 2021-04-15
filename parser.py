@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from PDDL import PDDL_Parser
 from pddlpy import DomainProblem
 from collections import defaultdict
 import itertools
-
+from PDDL import PDDL_Parser
 ## Core classes ##
 
 class Domain():
     
-    def __init__(self, pddlpy_domprob, parser):
-        self.parser_help = parser
-        self.domprob = pddlpy_domprob
+    def __init__(self, domainfile, problemfile):
+        self.parser_help = PDDL_Parser()
+        self.parser_help.parse_domain(domainfile)
+        self.parser_help.parse_problem(problemfile)
+        self.domprob = DomainProblem(domainfile, problemfile)
         self.current_state = None # State object
         self.pos_goal = None # tuple of literals that need to be true at goal
         self.neg_goal = None # tuple of literals that need to be false at goal

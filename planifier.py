@@ -15,7 +15,6 @@ def distance_one(from_, to_):
     return 1
     
 class AlphaStarPlannifier(Plannifier):
-    # TODO : we could handle the ancestors through an attribute of the class ancestors = Dict(State,List(State))
     
     def __init__(self, domain, heuristic_fn, dist_fn=distance_one):
         self.domain = domain
