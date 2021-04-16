@@ -62,10 +62,9 @@ class Domain():
 
         init_state=self.domprob.initialstate()
         init_state_set = set()
-        for i in range(len(init_state)):
-            [carac, obj] = init_state.pop().__dict__["predicate"]
-            init_state_set.add((carac, obj))
-                
+        for state in init_state:
+            init_state_set.add(tuple(state.predicate))
+
 
         # goal
         self.pos_goal = set(self.parser_help.positive_goals)
@@ -105,6 +104,7 @@ class State():
     def getChildren(self, actions):
         children=[]
         for action_name, action in actions.items() :
+            #print(action_name, action)
             for argTupple in list(action.action_dic.keys()):
                 precondPos=action.action_dic[argTupple]["preconditions_pos"]
                 precondNeg=action.action_dic[argTupple]["preconditions_neg"]

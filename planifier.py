@@ -50,8 +50,11 @@ class AlphaStarPlannifier(Plannifier):
         best_node, dist, value, ancestors = self.nodes.pop() # get our best current node
         if best_node.state in self.explored:
             return [], []
+        if len(ancestors) > 0:
+            print(ancestors[-1])
         self.explored.append(best_node.state)
         children = best_node.getChildren(self.actions)
+        print(len(children), 'children')
         children_ancestors = []
         children_nodes = []
         for move_type, move_args, child in children:
