@@ -36,6 +36,9 @@ class Domain():
         self.reversed_objects = defaultdict(list)
         for obj,typ in self.domprob.problem.objects.items():
             self.reversed_objects[typ].append(obj)
+        for type, subtypes in self.parser_help.types.items(): # add reference to subtypes
+            for sub in subtypes:
+                self.reversed_objects[type] += self.reversed_objects[sub]
 
         # action list
         action_dic = dict()
